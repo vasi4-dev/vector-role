@@ -1,0 +1,13 @@
+---
+# handlers file for vector
+- name: Start vector service ## хендлер для запуска vector
+  become: true
+  ansible.builtin.service:
+    name: vector
+    state: started
+
+- name: Restart vector service ## хендлер для перезапуска vector
+  become: true
+  ansible.builtin.service:
+    name: vector
+    state: started

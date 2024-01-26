@@ -1,0 +1,10 @@
+---
+- name: Package Installation
+  ansible.builtin.include_tasks:
+    file: package.yml
+  tags: [always]
+# для скачки вектора архивом - закомментируйте таску Package installation (выше) и раскомментируйте  таску  (ниже):
+#- name: Archive Installation
+#  ansible.builtin.include_tasks:
+#    file: archive.yml
+#  tags: [always]

@@ -1,0 +1,35 @@
+---
+# tasks file for vector
+
+- name: Package manager choosing
+  ansible.builtin.include_tasks:
+    file: "{{ lookup('first_found', params) }}"
+    apply:
+      tags: [install]
+  vars:
+    params:
+      files:
+        - "install/{{ ansible_pkg_mgr }}.yml"
+  tags: [install]
+
+- name: Configure Vector | ensure what directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ vector_config_dir }}"
+    state: directory
+    mode: "0755"
+  tags: [config]
+- name: Configure Vector | Template config
+  become: true
+  ansible.builtin.template:
+    src: vector.yml.j2
+    mode: "0755"
+    dest: "{{ vector_config_dir }}/vector.yml"
+  tags: [config]
+- name: Configure Vector Service | Template systemd unit
+  become: true
+  ansible.builtin.template:
+    src: vector.service.j2
+    mode: "0755"
+    dest: /etc/systemd/system/vector.service
+  tags: [config]
